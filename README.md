@@ -19,11 +19,6 @@
 - [Micronaut Reactor documentation](https://micronaut-projects.github.io/micronaut-reactor/snapshot/guide/index.html)
 
 
-## Feature discovery-kubernetes documentation
-
-- [Micronaut Kubernetes Service Discovery documentation](https://micronaut-projects.github.io/micronaut-kubernetes/latest/guide/#service-discovery)
-
-
 ## Feature management documentation
 
 - [Micronaut Management documentation](https://docs.micronaut.io/latest/guide/index.html#management)
@@ -46,13 +41,6 @@
 - [Micronaut Project Lombok documentation](https://docs.micronaut.io/latest/guide/index.html#lombok)
 
 - [https://projectlombok.org/features/all](https://projectlombok.org/features/all)
-
-
-## Feature kubernetes documentation
-
-- [Micronaut Kubernetes Support documentation](https://micronaut-projects.github.io/micronaut-kubernetes/latest/guide/index.html)
-
-- [https://kubernetes.io/docs/home/](https://kubernetes.io/docs/home/)
 
 
 ## Feature test-resources documentation

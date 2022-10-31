@@ -22,7 +22,6 @@ dependencies {
     implementation("io.micronaut.data:micronaut-data-mongodb")
     implementation("io.micronaut.grpc:micronaut-grpc-runtime")
     implementation("io.micronaut.jms:micronaut-jms-activemq-artemis")
-    implementation("io.micronaut.kubernetes:micronaut-kubernetes-discovery-client")
     implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("io.micronaut.toml:micronaut-toml")
     implementation("jakarta.annotation:jakarta.annotation-api")
