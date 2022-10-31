@@ -1,34 +1,51 @@
 package pl.baluch.stickergenerator.auth.grpc.register;
 
 import io.grpc.stub.StreamObserver;
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.Level;
-import pl.baluch.stickergenerator.api.*;
+import pl.baluch.stickergenerator.api.AuthServiceGrpc;
+import pl.baluch.stickergenerator.api.RegisterReply;
+import pl.baluch.stickergenerator.api.RegisterRequest;
 import pl.baluch.stickergenerator.auth.exceptions.ValidationException;
+import pl.baluch.stickergenerator.auth.model.Business;
+import pl.baluch.stickergenerator.auth.model.User;
+import pl.baluch.stickergenerator.auth.repository.BusinessRepository;
+import pl.baluch.stickergenerator.auth.repository.UserRepository;
+import reactor.core.publisher.Mono;
 
 @Log4j2
 @Singleton
 class Handler extends AuthServiceGrpc.AuthServiceImplBase {
-    private final Validator validator;
-
-    public Handler(Validator validator) {
-        this.validator = validator;
-    }
+    @Inject
+    private Validator validator;
+    @Inject
+    private BusinessRepository businessRepository;
+    @Inject
+    private UserRepository userRepository;
 
     @Override
     public void register(RegisterRequest request, StreamObserver<RegisterReply> responseObserver) {
+        //todo: replace it with reactive syntax
         var validationResult = validator.validate(request);
-        if(validationResult.hasErrors()){
-            log.log(Level.WARN, "Register Request with errors: {}", validationResult.errors());
+        if (validationResult.hasErrors()) {
+            log.info("Error when processing register request: {}", validationResult.errors());
             responseObserver.onError(new ValidationException(validationResult.collectErrors()));
             return;
         }
-        responseObserver.onNext(doRegister(request));
-        responseObserver.onCompleted();
+        doRegister(request)
+                .subscribe(responseObserver::onNext, t -> {
+                    log.info("Error when processing register request: {}", t.getMessage());
+                    responseObserver.onError(t);
+                }, responseObserver::onCompleted);
     }
 
-    private RegisterReply doRegister(RegisterRequest request) {
-        return RegisterReply.newBuilder().build();
+    private Mono<RegisterReply> doRegister(RegisterRequest request) {
+        return userRepository
+                .save(new User(request.getFirstName(), request.getLastName(), request.getEmail(), request.getPassword()))
+                .flatMap(user -> businessRepository.save(new Business(request.getBusinessName(), user)))
+                .doOnSuccess(business -> log.info("User: {}, Business: {}", business.getOwner().getId(), business.getId()))
+                .map(Business::getOwner)
+                .map(user -> RegisterReply.newBuilder().build());
     }
 }
