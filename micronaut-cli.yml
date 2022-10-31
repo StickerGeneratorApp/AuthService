@@ -1,0 +1,6 @@
+applicationType: grpc
+defaultPackage: AuthService
+testFramework: junit
+sourceLanguage: java
+buildTool: gradle
+features: [annotation-api, app-name, data, data-mongodb-reactive, discovery-kubernetes, gradle, grpc, jackson-databind, java, java-application, jib, jms-activemq-artemis, junit, kubernetes, log4j2, lombok, management, micronaut-build, readme, security-annotations, security-jwt, shade, test-resources, toml, toml-build]

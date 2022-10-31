@@ -1,0 +1,83 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.micronaut.application") version "3.5.3"
+    id("com.google.protobuf") version "0.8.15"
+    id("com.google.cloud.tools.jib") version "2.8.0"
+    id("io.micronaut.test-resources") version "3.5.3"
+}
+
+version = "0.1"
+group = "AuthService"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("io.micronaut.data:micronaut-data-document-processor")
+    annotationProcessor("io.micronaut.security:micronaut-security-annotations")
+    implementation("io.micronaut:micronaut-jackson-databind")
+    implementation("io.micronaut:micronaut-management")
+    implementation("io.micronaut.data:micronaut-data-mongodb")
+    implementation("io.micronaut.grpc:micronaut-grpc-runtime")
+    implementation("io.micronaut.jms:micronaut-jms-activemq-artemis")
+    implementation("io.micronaut.kubernetes:micronaut-kubernetes-discovery-client")
+    implementation("io.micronaut.security:micronaut-security-jwt")
+    implementation("io.micronaut.toml:micronaut-toml")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    implementation("org.apache.logging.log4j:log4j-core:2.19.0")
+    compileOnly("org.projectlombok:lombok")
+    runtimeOnly("org.apache.logging.log4j:log4j-api:2.19.0")
+    runtimeOnly("org.apache.logging.log4j:log4j-slf4j-impl:2.17.2")
+    runtimeOnly("org.mongodb:mongodb-driver-reactivestreams")
+    implementation("io.micronaut:micronaut-validation")
+
+    testImplementation("io.micronaut:micronaut-http-client")
+
+}
+
+
+application {
+    mainClass.set("AuthService.Application")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+}
+
+/*tasks {
+    jib {
+        to {
+            image = "gcr.io/myapp/jib-image"
+        }
+    }
+}*/
+sourceSets {
+    main {
+        java {
+            srcDirs("build/generated/source/proto/main/grpc")
+            srcDirs("build/generated/source/proto/main/java")
+        }
+    }
+}
+
+protobuf {
+    protoc { artifact = "com.google.protobuf:protoc:3.20.1" }
+    plugins {
+        grpc { artifact = "io.grpc:protoc-gen-grpc-java:1.46.0" }
+    }
+    generateProtoTasks {
+        all()*.plugins { grpc {} }
+    }
+}
+micronaut {
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("AuthService.*")
+    }
+}
+
+
+

@@ -1,0 +1,3 @@
+[submodule "src/main/proto/AuthProto"]
+	path = src/main/proto/AuthProto
+	url = https://github.com/StickerGeneratorApp/AuthProto.git
