@@ -1,5 +1,6 @@
 micronaut.application.name = 'authService'
 mongodb.uri = 'mongodb://root:password@localhost:27017/authService?authSource=admin'
+mongodb.database.name = 'authService'
 
 [micronaut.jms.activemq.artemis]
 enabled = true
