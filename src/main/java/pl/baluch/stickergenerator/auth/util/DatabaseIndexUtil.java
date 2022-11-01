@@ -1,7 +1,6 @@
 package pl.baluch.stickergenerator.auth.util;
 
 import com.mongodb.client.model.IndexOptions;
-import com.mongodb.client.model.Indexes;
 import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoCollection;
 import io.micronaut.context.annotation.Value;
@@ -10,6 +9,8 @@ import io.micronaut.data.model.naming.NamingStrategy;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.SneakyThrows;
+import org.bson.BsonDocument;
+import org.bson.BsonInt32;
 import reactor.core.publisher.Mono;
 
 @Singleton
@@ -29,6 +30,6 @@ public class DatabaseIndexUtil {
 
     public Mono<String> createUniqueIndex(Class<?> typeClass, String columnName) {
         return Mono.from(getCollection(typeClass)
-                .createIndex(Indexes.text(columnName), new IndexOptions().unique(true)));
+                .createIndex(new BsonDocument(columnName, new BsonInt32(1)), new IndexOptions().unique(true)));
     }
 }
