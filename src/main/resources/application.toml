@@ -9,3 +9,5 @@ connection-string = 'tcp://localhost:61616'
 [micronaut.security]
 authentication = 'bearer'
 token.jwt.signatures.secret.generator.secret = 'pleaseChangeThisSecretForANewOne'
+token.jwt.generator.access-token.expiration = 8640 # 1d in seconds
+token.jwt.generator.refresh-token.expiration = 259200 # 30d in seconds
