@@ -6,18 +6,18 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import lombok.extern.log4j.Log4j2;
 import org.bson.types.ObjectId;
-import pl.baluch.stickergenerator.auth.model.Business;
+import pl.baluch.stickergenerator.auth.model.Company;
 import pl.baluch.stickergenerator.auth.util.DatabaseIndexUtil;
 
 @Log4j2
 @MongoRepository
-public abstract class BusinessRepository implements ReactorCrudRepository<Business, ObjectId> {
+public abstract class CompanyRepository implements ReactorCrudRepository<Company, ObjectId> {
 
     @Inject
     private DatabaseIndexUtil databaseUtils;
     @PostConstruct
     public void on(){
-        databaseUtils.createUniqueIndex(Business.class, "name")
-                .subscribe(s -> log.info("Added `business` index: {}", s));
+        databaseUtils.createUniqueIndex(Company.class, "name")
+                .subscribe(s -> log.info("Added `company` index: {}", s));
     }
 }

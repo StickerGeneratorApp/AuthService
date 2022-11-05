@@ -9,9 +9,9 @@ import pl.baluch.stickergenerator.api.RegisterReply;
 import pl.baluch.stickergenerator.api.RegisterRequest;
 import pl.baluch.stickergenerator.auth.exceptions.ValidationException;
 import pl.baluch.stickergenerator.auth.jwt.ClientTokensFactory;
-import pl.baluch.stickergenerator.auth.model.Business;
+import pl.baluch.stickergenerator.auth.model.Company;
 import pl.baluch.stickergenerator.auth.model.User;
-import pl.baluch.stickergenerator.auth.repository.BusinessRepository;
+import pl.baluch.stickergenerator.auth.repository.CompanyRepository;
 import pl.baluch.stickergenerator.auth.repository.UserRepository;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +21,7 @@ public class RegisterHandler {
     @Inject
     private Validator validator;
     @Inject
-    private BusinessRepository businessRepository;
+    private CompanyRepository companyRepository;
     @Inject
     private UserRepository userRepository;
     @Inject
@@ -44,8 +44,8 @@ public class RegisterHandler {
         String passwordHash = BCrypt.hashpw(request.getPassword(), salt);
         return userRepository
                 .save(new User(request.getFirstName(), request.getLastName(), request.getEmail(), passwordHash))
-                .flatMap(user -> businessRepository.save(new Business(request.getBusinessName(), user)))
-                .map(Business::getOwner);
+                .flatMap(user -> companyRepository.save(new Company(request.getCompanyName(), user)))
+                .map(Company::getOwner);
     }
 
     private Mono<RegisterReply> buildResponse(Mono<ClientTokens> clientTokensMono) {

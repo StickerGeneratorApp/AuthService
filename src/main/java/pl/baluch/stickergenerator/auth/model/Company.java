@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
 @MappedEntity
 @Getter
 @Setter
-public class Business {
+public class Company {
     @Id
     @GeneratedValue
     private ObjectId id;
@@ -24,7 +24,7 @@ public class Business {
     @Relation(value = Relation.Kind.ONE_TO_ONE)
     private User owner;
 
-    public Business(String name, User owner){
+    public Company(String name, User owner){
         this.name = name;
         this.owner = owner;
     }
