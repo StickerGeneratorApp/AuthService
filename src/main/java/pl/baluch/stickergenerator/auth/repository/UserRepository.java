@@ -5,17 +5,18 @@ import io.micronaut.data.mongodb.annotation.MongoRepository;
 import io.micronaut.data.repository.reactive.ReactorCrudRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import lombok.extern.log4j.Log4j2;
 import org.bson.types.ObjectId;
 import pl.baluch.stickergenerator.auth.model.User;
 import pl.baluch.stickergenerator.auth.util.DatabaseIndexUtil;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotNull;
 
 @Log4j2
 @MongoRepository
+@Singleton
 public abstract class UserRepository implements ReactorCrudRepository<User, ObjectId> {
 
     @Executable
